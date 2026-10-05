@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Tracker</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #111;
+    color: #f5f5f5;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    padding: 28px 20px 12px;
+    max-width: 900px;
+    margin: auto;
+}
+
+h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.subtitle {
+    color: #888;
+    margin-top: 7px;
+}
+
+main {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* ---------- HOME ---------- */
+
+.home-buttons {
+    display: grid;
+    gap: 16px;
+    margin-top: 25px;
+}
+
+.home-card {
+    background: #1b1b1b;
+    border: none;
+    border-radius: 18px;
+    padding: 25px;
+    color: white;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.home-card:hover {
+    background: #252525;
+    transform: translateY(-2px);
+}
+
+.home-icon {
+    font-size: 34px;
+    margin-bottom: 12px;
+}
+
+.home-card h2 {
+    margin: 0 0 7px;
+}
+
+.home-card p {
+    color: #888;
+    margin: 0;
+}
+
+/* ---------- GENERAL ---------- */
+
+.page {
+    display: none;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.section {
+    background: #1a1a1a;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.section h2 {
+    margin-top: 0;
+}
+
+/* ---------- CALENDAR ---------- */
+
+.calendar-box {
+    background: #1a1a1a;
+    border-radius: 18px;
+    padding: 20px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-header h2 {
+    margin: 0;
+}
+
+.month-button {
+    background: #292929;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 9px 14px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.weekdays,
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 7px;
+}
+
+.weekday {
+    text-align: center;
+    color: #777;
+    font-size: 12px;
+    padding-bottom: 6px;
+}
+
+.day {
+    min-height: 70px;
+    background: #222;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    padding: 9px;
+    text-align: left;
+}
+
+.day:hover {
+    background: #2b2b2b;
+}
+
+.day.today {
+    outline: 2px solid #eee;
+}
+
+.day.empty {
+    background: transparent;
+    cursor: default;
+}
+
+.workout-dots {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    display: flex;
+    gap: 4px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: white;
+}
+
+/* ---------- CATEGORIES ---------- */
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.category {
+    background: #292929;
+    color: #ddd;
+    border: 1px solid #3a3a3a;
+    padding: 10px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.category.selected {
+    background: white;
+    color: #111;
+}
+
+/* ---------- INPUTS ---------- */
+
+input,
+textarea {
+    width: 100%;
+    background: #111;
+    color: white;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+/* ---------- EXERCISES ---------- */
+
+.exercise {
+    background: #222;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.exercise-top {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.remove-exercise,
+.remove-set {
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+}
+
+.set {
+    display: grid;
+    grid-template-columns: 35px 1fr 1fr 35px;
+    gap: 8px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.set-number {
+    color: #777;
+}
+
+.add-set,
+.add-exercise,
+.save-button,
+.add-recipe-button {
+    border: none;
+    border-radius: 10px;
+    padding: 11px 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.add-set,
+.add-exercise,
+.add-recipe-button {
+    background: #333;
+    color: white;
+}
+
+.add-exercise,
+.add-recipe-button {
+    width: 100%;
+}
+
+.save-button {
+    background: white;
+    color: #111;
+    width: 100%;
+    font-weight: bold;
+}
+
+/* ---------- FOOD ---------- */
+
+.meal {
+    background: #222;
+    border-radius: 14px;
+    padding: 17px;
+    margin-bottom: 12px;
+}
+
+.meal h3 {
+    margin: 0 0 7px;
+}
+
+.meal p {
+    color: #999;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.recipe-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+.delete-recipe {
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+}
+
+#recipeForm {
+    display: none;
+}
+
+.form-row {
+    margin-bottom: 13px;
+}
+
+.form-row label {
+    display: block;
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 600px) {
+
+    main {
+        padding: 12px;
+    }
+
+    .calendar-box {
+        padding: 12px;
+    }
+
+    .day {
+        min-height: 55px;
+        padding: 6px;
+    }
+
+    .set {
+        grid-template-columns: 28px 1fr 1fr 28px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1 id="pageTitle">My Tracker</h1>
+    <div class="subtitle" id="pageSubtitle">
+        Training, food and progress
+    </div>
+</header>
+
+<main>
+
+<!-- ================= HOME ================= -->
+
+<div id="homePage" class="page" style="display:block;">
+
+    <div class="home-buttons">
+
+        <button class="home-card" onclick="showPage('gymPage')">
+
+            <div class="home-icon">🏋️</div>
+
+            <h2>Gym Tracker</h2>
+
+            <p>
+                Track workouts, exercises, sets, reps,
+                weights and body weight.
+            </p>
+
+        </button>
+
+
+        <button class="home-card" onclick="showPage('foodPage')">
+
+            <div class="home-icon">🍽️</div>
+
+            <h2>Food Tracker</h2>
+
+            <p>
+                Browse meals and save your own recipes.
+            </p>
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= GYM ================= -->
+
+<div id="gymPage" class="page">
+
+    <button class="back-button" onclick="showPage('homePage')">
+        ← Home
+    </button>
+
+    <div class="calendar-box">
+
+        <div class="calendar-header">
+
+            <button class="month-button" onclick="changeMonth(-1)">
+                ‹
+            </button>
+
+            <h2 id="monthTitle"></h2>
+
+            <button class="month-button" onclick="changeMonth(1)">
+                ›
+            </button>
+
+        </div>
+
+        <div class="weekdays">
+            <div class="weekday">MON</div>
+            <div class="weekday">TUE</div>
+            <div class="weekday">WED</div>
+            <div class="weekday">THU</div>
+            <div class="weekday">FRI</div>
+            <div class="weekday">SAT</div>
+            <div class="weekday">SUN</div>
+        </div>
+
+        <div class="calendar" id="calendar"></div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= DAY ================= -->
+
+<div id="dayPage" class="page">
+
+    <button class="back-button" onclick="showPage('gymPage')">
+        ← Calendar
+    </button>
+
+    <h1 id="selectedDateTitle"></h1>
+
+
+    <div class="section">
+
+        <h2>What did you train?</h2>
+
+        <div class="categories">
+
+            <button class="category" onclick="toggleCategory(this)">Upper</button>
+            <button class="category" onclick="toggleCategory(this)">Lower</button>
+            <button class="category" onclick="toggleCategory(this)">Back</button>
+            <button class="category" onclick="toggleCategory(this)">Chest</button>
+            <button class="category" onclick="toggleCategory(this)">Shoulders</button>
+            <button class="category" onclick="toggleCategory(this)">Arms</button>
+            <button class="category" onclick="toggleCategory(this)">Core</button>
+            <button class="category" onclick="toggleCategory(this)">Cardio</button>
+            <button class="category" onclick="toggleCategory(this)">Other</button>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>Body weight</h2>
+
+        <input
+            id="bodyWeight"
+            type="number"
+            step="0.1"
+            placeholder="kg"
+            oninput="autoSaveWorkout()"
+        >
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>Exercises</h2>
+
+        <div id="exerciseList"></div>
+
+        <button class="add-exercise" onclick="addExercise()">
+            + Add exercise
+        </button>
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>Notes</h2>
+
+        <textarea
+            id="notes"
+            placeholder="How did the workout feel?"
+            oninput="autoSaveWorkout()"
+        ></textarea>
+
+    </div>
+
+
+    <button class="save-button" onclick="saveWorkout()">
+        Save workout
+    </button>
+
+</div>
+
+
+<!-- ================= FOOD ================= -->
+
+<div id="foodPage" class="page">
+
+    <button class="back-button" onclick="showPage('homePage')">
+        ← Home
+    </button>
+
+    <h1>Food Tracker</h1>
+
+    <p class="subtitle">
+        Meals and recipes you want to remember.
+    </p>
+
+
+    <div class="section">
+
+        <h2>Your recipes</h2>
+
+        <div id="recipeList"></div>
+
+        <button
+            class="add-recipe-button"
+            onclick="showRecipeForm()"
+        >
+            + Add recipe
+        </button>
+
+    </div>
+
+
+    <div id="recipeForm" class="section">
+
+        <h2>New recipe</h2>
+
+        <div class="form-row">
+
+            <label>Recipe name</label>
+
+            <input
+                id="recipeName"
+                placeholder="e.g. Chicken rice bowl"
+            >
+
+        </div>
+
+
+        <div class="form-row">
+
+            <label>Ingredients</label>
+
+            <textarea
+                id="recipeIngredients"
+                placeholder="Chicken&#10;Rice&#10;Red bell pepper&#10;Sauce"
+            ></textarea>
+
+        </div>
+
+
+        <div class="form-row">
+
+            <label>Instructions</label>
+
+            <textarea
+                id="recipeInstructions"
+                placeholder="How do you make it?"
+            ></textarea>
+
+        </div>
+
+
+        <div class="form-row">
+
+            <label>Notes</label>
+
+            <input
+                id="recipeNotes"
+                placeholder="Optional"
+            >
+
+        </div>
+
+
+        <button
+            class="save-button"
+            onclick="saveRecipe()"
+        >
+            Save recipe
+        </button>
+
+    </div>
+
+</div>
+
+</main>
+
+
+<script>
+
+/* =====================================================
+   DATA
+===================================================== */
+
+let currentDate = new Date();
+let selectedDate = null;
+
+let workouts =
+    JSON.parse(localStorage.getItem("gymWorkouts")) || {};
+
+let recipes =
+    JSON.parse(localStorage.getItem("myRecipes")) || [];
+
+
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+function showPage(pageId) {
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.style.display = "none";
+    });
+
+    document.getElementById(pageId).style.display = "block";
+
+
+    if (pageId === "gymPage") {
+        renderCalendar();
+    }
+
+    if (pageId === "foodPage") {
+        renderRecipes();
+    }
+}
+
+
+/* =====================================================
+   CALENDAR
+===================================================== */
+
+function renderCalendar() {
+
+    const calendar =
+        document.getElementById("calendar");
+
+    calendar.innerHTML = "";
+
+    const year =
+        currentDate.getFullYear();
+
+    const month =
+        currentDate.getMonth();
+
+    document.getElementById("monthTitle").textContent =
+        new Intl.DateTimeFormat("en-US", {
+            month: "long",
+            year: "numeric"
+        }).format(currentDate);
+
+
+    let firstDay =
+        new Date(year, month, 1).getDay();
+
+    firstDay =
+        (firstDay + 6) % 7;
+
+
+    const daysInMonth =
+        new Date(year, month + 1, 0).getDate();
+
+
+    for (let i = 0; i < firstDay; i++) {
+
+        const empty =
+            document.createElement("div");
+
+        empty.className = "day empty";
+
+        calendar.appendChild(empty);
+    }
+
+
+    for (let day = 1; day <= daysInMonth; day++) {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "day";
+
+        button.textContent = day;
+
+
+        const dateKey =
+            `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+
+        button.onclick =
+            () => openDay(dateKey);
+
+
+        const today =
+            new Date();
+
+
+        if (
+            day === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear()
+        ) {
+
+            button.classList.add("today");
+
+        }
+
+
+        if (workouts[dateKey]) {
+
+            const dots =
+                document.createElement("div");
+
+            dots.className =
+                "workout-dots";
+
+
+            const categories =
+                workouts[dateKey].categories || [];
+
+
+            categories.forEach(() => {
+
+                const dot =
+                    document.createElement("div");
+
+                dot.className = "dot";
+
+                dots.appendChild(dot);
+
+            });
+
+
+            if (categories.length === 0) {
+
+                const dot =
+                    document.createElement("div");
+
+                dot.className = "dot";
+
+                dots.appendChild(dot);
+
+            }
+
+
+            button.appendChild(dots);
+        }
+
+
+        calendar.appendChild(button);
+    }
+}
+
+
+function changeMonth(amount) {
+
+    currentDate.setMonth(
+        currentDate.getMonth() + amount
+    );
+
+    renderCalendar();
+}
+
+
+/* =====================================================
+   OPEN DAY
+===================================================== */
+
+function openDay(dateKey) {
+
+    selectedDate = dateKey;
+
+    showPage("dayPage");
+
+
+    const date =
+        new Date(dateKey + "T12:00:00");
+
+
+    document.getElementById(
+        "selectedDateTitle"
+    ).textContent =
+        date.toLocaleDateString("en-GB", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+
+
+    loadWorkout(dateKey);
+}
+
+
+/* =====================================================
+   CATEGORIES
+===================================================== */
+
+function toggleCategory(button) {
+
+    button.classList.toggle("selected");
+
+    autoSaveWorkout();
+}
+
+
+/* =====================================================
+   EXERCISES
+===================================================== */
+
+function addExercise(name = "") {
+
+    const list =
+        document.getElementById("exerciseList");
+
+
+    const exercise =
+        document.createElement("div");
+
+    exercise.className = "exercise";
+
+
+    exercise.innerHTML = `
+
+        <div class="exercise-top">
+
+            <input
+                class="exercise-name"
+                placeholder="Exercise name"
+                value="${escapeHTML(name)}"
+                oninput="autoSaveWorkout()"
+            >
+
+            <button
+                class="remove-exercise"
+                onclick="this.closest('.exercise').remove(); autoSaveWorkout();"
+            >
+                ✕
+            </button>
+
+        </div>
+
+        <div class="sets"></div>
+
+        <button
+            class="add-set"
+            onclick="addSet(this)"
+        >
+            + Add set
+        </button>
+
+    `;
+
+
+    list.appendChild(exercise);
+
+
+    addSet(
+        exercise.querySelector(".add-set")
+    );
+}
+
+
+function addSet(
+    button,
+    weight = "",
+    reps = ""
+) {
+
+    const exercise =
+        button.closest(".exercise");
+
+
+    const sets =
+        exercise.querySelector(".sets");
+
+
+    const setNumber =
+        sets.children.length + 1;
+
+
+    const set =
+        document.createElement("div");
+
+
+    set.className = "set";
+
+
+    set.innerHTML = `
+
+        <div class="set-number">
+            ${setNumber}
+        </div>
+
+        <input
+            type="number"
+            step="0.5"
+            placeholder="kg"
+            value="${weight}"
+            oninput="autoSaveWorkout()"
+        >
+
+        <input
+            type="number"
+            placeholder="reps"
+            value="${reps}"
+            oninput="autoSaveWorkout()"
+        >
+
+        <button
+            class="remove-set"
+            onclick="removeSet(this)"
+        >
+            ✕
+        </button>
+
+    `;
+
+
+    sets.appendChild(set);
+
+    autoSaveWorkout();
+}
+
+
+function removeSet(button) {
+
+    const set =
+        button.closest(".set");
+
+    const sets =
+        set.parentElement;
+
+
+    set.remove();
+
+
+    [...sets.children].forEach(
+        (element, index) => {
+
+            element.querySelector(
+                ".set-number"
+            ).textContent = index + 1;
+
+        }
+    );
+
+
+    autoSaveWorkout();
+}
+
+
+/* =====================================================
+   GET CURRENT WORKOUT
+===================================================== */
+
+function getCurrentWorkout() {
+
+    const categories = [];
+
+
+    document
+        .querySelectorAll(".category.selected")
+        .forEach(button => {
+
+            categories.push(
+                button.textContent
+            );
+
+        });
+
+
+    const exercises = [];
+
+
+    document
+        .querySelectorAll(".exercise")
+        .forEach(exercise => {
+
+            const name =
+                exercise.querySelector(
+                    ".exercise-name"
+                ).value;
+
+
+            const sets = [];
+
+
+            exercise
+                .querySelectorAll(".set")
+                .forEach(set => {
+
+                    const inputs =
+                        set.querySelectorAll("input");
+
+
+                    sets.push({
+
+                        weight:
+                            inputs[0].value,
+
+                        reps:
+                            inputs[1].value
+
+                    });
+
+                });
+
+
+            if (name.trim() !== "") {
+
+                exercises.push({
+
+                    name: name,
+
+                    sets: sets
+
+                });
+
+            }
+
+        });
+
+
+    return {
+
+        categories: categories,
+
+        bodyWeight:
+            document.getElementById(
+                "bodyWeight"
+            ).value,
+
+        exercises: exercises,
+
+        notes:
+            document.getElementById(
+                "notes"
+            ).value
+
+    };
+}
+
+
+/* =====================================================
+   SAVE WORKOUT
+===================================================== */
+
+function autoSaveWorkout() {
+
+    if (!selectedDate) return;
+
+    workouts[selectedDate] =
+        getCurrentWorkout();
+
+
+    localStorage.setItem(
+        "gymWorkouts",
+        JSON.stringify(workouts)
+    );
+}
+
+
+function saveWorkout() {
+
+    autoSaveWorkout();
+
+    alert("Workout saved!");
+
+    showPage("gymPage");
+}
+
+
+/* =====================================================
+   LOAD WORKOUT
+===================================================== */
+
+function loadWorkout(dateKey) {
+
+    const workout =
+        workouts[dateKey];
+
+
+    document
+        .querySelectorAll(".category")
+        .forEach(button => {
+
+            button.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+    document.getElementById(
+        "bodyWeight"
+    ).value = "";
+
+
+    document.getElementById(
+        "notes"
+    ).value = "";
+
+
+    document.getElementById(
+        "exerciseList"
+    ).innerHTML = "";
+
+
+    if (!workout) {
+
+        addExercise();
+
+        return;
+    }
+
+
+    document
+        .querySelectorAll(".category")
+        .forEach(button => {
+
+            if (
+                workout.categories &&
+                workout.categories.includes(
+                    button.textContent
+                )
+            ) {
+
+                button.classList.add(
+                    "selected"
+                );
+
+            }
+
+        });
+
+
+    document.getElementById(
+        "bodyWeight"
+    ).value =
+        workout.bodyWeight || "";
+
+
+    document.getElementById(
+        "notes"
+    ).value =
+        workout.notes || "";
+
+
+    workout.exercises.forEach(
+        exerciseData => {
+
+            addExercise(
+                exerciseData.name
+            );
+
+
+            const exercise =
+                document.querySelector(
+                    "#exerciseList .exercise:last-child"
+                );
+
+
+            const setsButton =
+                exercise.querySelector(
+                    ".add-set"
+                );
+
+
+            const sets =
+                exercise.querySelector(
+                    ".sets"
+                );
+
+
+            sets.innerHTML = "";
+
+
+            exerciseData.sets.forEach(
+                setData => {
+
+                    addSet(
+                        setsButton,
+                        setData.weight,
+                        setData.reps
+                    );
+
+                }
+            );
+
+        }
+    );
+}
+
+
+/* =====================================================
+   FOOD / RECIPES
+===================================================== */
+
+function showRecipeForm() {
+
+    const form =
+        document.getElementById(
+            "recipeForm"
+        );
+
+    form.style.display = "block";
+
+    form.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+
+function saveRecipe() {
+
+    const name =
+        document.getElementById(
+            "recipeName"
+        ).value.trim();
+
+
+    if (!name) {
+
+        alert(
+            "Please give your recipe a name."
+        );
+
+        return;
+    }
+
+
+    const recipe = {
+
+        id: Date.now(),
+
+        name: name,
+
+        ingredients:
+            document.getElementById(
+                "recipeIngredients"
+            ).value,
+
+        instructions:
+            document.getElementById(
+                "recipeInstructions"
+            ).value,
+
+        notes:
+            document.getElementById(
+                "recipeNotes"
+            ).value
+
+    };
+
+
+    recipes.push(recipe);
+
+
+    localStorage.setItem(
+        "myRecipes",
+        JSON.stringify(recipes)
+    );
+
+
+    document.getElementById(
+        "recipeName"
+    ).value = "";
+
+
+    document.getElementById(
+        "recipeIngredients"
+    ).value = "";
+
+
+    document.getElementById(
+        "recipeInstructions"
+    ).value = "";
+
+
+    document.getElementById(
+        "recipeNotes"
+    ).value = "";
+
+
+    document.getElementById(
+        "recipeForm"
+    ).style.display = "none";
+
+
+    renderRecipes();
+}
+
+
+function renderRecipes() {
+
+    const list =
+        document.getElementById(
+            "recipeList"
+        );
+
+
+    list.innerHTML = "";
+
+
+    if (recipes.length === 0) {
+
+        list.innerHTML = `
+            <p style="color:#777;">
+                You haven't added any recipes yet.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    recipes.forEach(recipe => {
+
+        const meal =
+            document.createElement("div");
+
+        meal.className = "meal";
+
+
+        meal.innerHTML = `
+
+            <h3>
+                ${escapeHTML(recipe.name)}
+            </h3>
+
+            ${
+                recipe.ingredients
+                ? `
+                <p>
+                    <strong>Ingredients</strong><br>
+                    ${escapeHTML(recipe.ingredients)
+                        .replace(/\n/g, "<br>")}
+                </p>
+                `
+                : ""
+            }
+
+            ${
+                recipe.instructions
+                ? `
+                <p style="margin-top:12px;">
+                    <strong>Instructions</strong><br>
+                    ${escapeHTML(recipe.instructions)
+                        .replace(/\n/g, "<br>")}
+                </p>
+                `
+                : ""
+            }
+
+            ${
+                recipe.notes
+                ? `
+                <p style="margin-top:12px;">
+                    <strong>Notes:</strong>
+                    ${escapeHTML(recipe.notes)}
+                </p>
+                `
+                : ""
+            }
+
+            <div class="recipe-actions">
+
+                <button
+                    class="delete-recipe"
+                    onclick="deleteRecipe(${recipe.id})"
+                >
+                    Delete
+                </button>
+
+            </div>
+
+        `;
+
+
+        list.appendChild(meal);
+
+    });
+}
+
+
+function deleteRecipe(id) {
+
+    recipes =
+        recipes.filter(
+            recipe => recipe.id !== id
+        );
+
+
+    localStorage.setItem(
+        "myRecipes",
+        JSON.stringify(recipes)
+    );
+
+
+    renderRecipes();
+}
+
+
+/* =====================================================
+   SECURITY HELPER
+===================================================== */
+
+function escapeHTML(text) {
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+renderCalendar();
+
+</script>
+
+</body>
+</html>
